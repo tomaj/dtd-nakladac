@@ -1,4 +1,5 @@
 # mnoziny First a Follow pre neterminale v gramatike
 
-nechcelo sa mi to tu prekreslovat a robit z toho tabulku :)
+nechcelo sa mi to tu prekreslovat a robit z toho tabulku :) tak som to dal na yweb
+
 http://mlok.yweb.sk/FirstFollow.txt
