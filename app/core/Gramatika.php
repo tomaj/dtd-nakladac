@@ -2,15 +2,15 @@
 
 class Gramatika
 {
-	protected $terminaly;
+	protected $termiSymboly;
 	
 	protected $koniec;
 	
 	protected $gramatika;
 
-	public function __construct(array $teminaly, $koniec, array $gramatika)
+	public function __construct(array $temiSymboly, $koniec, array $gramatika)
 	{
-		$this->terminaly = $teminaly;
+		$this->termiSymboly = $temiSymboly;
 		$this->koniec = $koniec;
 		$this->gramatika = $gramatika;
 	}
@@ -19,28 +19,28 @@ class Gramatika
 	{
 		$data = array();
 		
-		$data[] = array(new Nal('S', Nal::NETERMINAL), new Nal('x', Nal::TERMINAL), $this->temp_NalFromString('xSyy'), 2);
-		$data[] = array(new Nal('S', Nal::NETERMINAL), new Nal('y', Nal::TERMINAL), $this->temp_NalFromString('yxXx'), 1);
-		$data[] = array(new Nal('X', Nal::NETERMINAL), new Nal('x', Nal::TERMINAL), $this->temp_NalFromString('e'), 4);
-		$data[] = array(new Nal('X', Nal::NETERMINAL), new Nal('y', Nal::TERMINAL), $this->temp_NalFromString('yYx'), 3);
-		$data[] = array(new Nal('X', Nal::NETERMINAL), new Nal('z', Nal::TERMINAL), $this->temp_NalFromString('e'), 4);
-		$data[] = array(new Nal('X', Nal::NETERMINAL), new Nal('e', Nal::TERMINAL), $this->temp_NalFromString('e'), 4);
-		$data[] = array(new Nal('Y', Nal::NETERMINAL), new Nal('x', Nal::TERMINAL), $this->temp_NalFromString('xxXz'), 5);
-		$data[] = array(new Nal('Y', Nal::NETERMINAL), new Nal('y', Nal::TERMINAL), $this->temp_NalFromString('yyYYy'), 6);
+		$data[] = array(new Symbol('S', Symbol::NETERMISymbol), new Symbol('x', Symbol::TERMISymbol), $this->temp_SymbolFromString('xSyy'), 2);
+		$data[] = array(new Symbol('S', Symbol::NETERMISymbol), new Symbol('y', Symbol::TERMISymbol), $this->temp_SymbolFromString('yxXx'), 1);
+		$data[] = array(new Symbol('X', Symbol::NETERMISymbol), new Symbol('x', Symbol::TERMISymbol), $this->temp_SymbolFromString('e'), 4);
+		$data[] = array(new Symbol('X', Symbol::NETERMISymbol), new Symbol('y', Symbol::TERMISymbol), $this->temp_SymbolFromString('yYx'), 3);
+		$data[] = array(new Symbol('X', Symbol::NETERMISymbol), new Symbol('z', Symbol::TERMISymbol), $this->temp_SymbolFromString('e'), 4);
+		$data[] = array(new Symbol('X', Symbol::NETERMISymbol), new Symbol('e', Symbol::TERMISymbol), $this->temp_SymbolFromString('e'), 4);
+		$data[] = array(new Symbol('Y', Symbol::NETERMISymbol), new Symbol('x', Symbol::TERMISymbol), $this->temp_SymbolFromString('xxXz'), 5);
+		$data[] = array(new Symbol('Y', Symbol::NETERMISymbol), new Symbol('y', Symbol::TERMISymbol), $this->temp_SymbolFromString('yyYYy'), 6);
 		
 		return new Tabulka($data);
 	}
 	
 	// temporarana metoda zatial koli temporrarne tabulke ktora je napevno
-	protected function temp_NalFromString($input)
+	protected function temp_SymbolFromString($input)
 	{
 		$result = array();
 		for ($i = 0; $i < strlen($input); $i++)
 		{
 			$char = $input[$i];
-			$type = Nal::NETERMINAL;
-			if (in_array($char, $this->terminaly)) $type = Nal::TERMINAL;
-			$result[] = new Nal($char, $type);
+			$type = Symbol::NETERMISymbol;
+			if (in_array($char, $this->termiSymboly)) $type = Symbol::TERMISymbol;
+			$result[] = new Symbol($char, $type);
 		}
 		return $result;
 	}
