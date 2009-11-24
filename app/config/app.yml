@@ -1,0 +1,17 @@
+#
+#	Vseobecny config
+#
+#
+#
+
+terminaly:
+    - 'x'
+    - 'y'
+    - 'z'
+
+koniec: e
+
+gramatika:
+    - S -> yxXx | xSyy
+    - X -> yx | e
+    - Y -> xxXz | yyYYy
