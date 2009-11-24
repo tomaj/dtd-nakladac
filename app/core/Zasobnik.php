@@ -21,7 +21,7 @@ class Zasobnik
 			}
 		}
 		
-		// ukoncovaci prazdny termiSymbol nebudeme vkladat do zasobnika
+		// ukoncovaci prazdny TERMINAL nebudeme vkladat do zasobnika
 		if ($items->isEmptySymbol()) return;
 		
 		Logger::log("Vkladam na vrch zasobnika '$items'");
@@ -50,7 +50,7 @@ class Zasobnik
 		$result = '';
 		foreach ($this->data as $item)
 		{
-			$result .= $item;
+			$result = $item . $result; // vypisujeme opacne, na lavo je vrch zasobnika
 		}
 		return $result;
 	}

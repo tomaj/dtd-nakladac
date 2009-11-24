@@ -2,8 +2,8 @@
 
 class Symbol
 {
-	const TERMISymbol    = 1;
-	const NETERMISymbol  = 2;
+	const TERMINAL    = 1;
+	const NETERMINAL  = 2;
 
 	protected $type;
 
@@ -24,7 +24,7 @@ class Symbol
 	{
 		if (is_string($input))
 		{
-			$input = new Symbol($input, Symbol::TERMISymbol);
+			$input = new Symbol($input, Symbol::TERMINAL);
 		}
 		
 		return $this->__toString() == $input->__toString();
@@ -32,8 +32,7 @@ class Symbol
 	
 	public function isEmptySymbol()
 	{
-		$end = new Symbol(AppConfig::get('empty_symbol'), Symbol::TERMISymbol);
-		var_dump($end);
+		$end = new Symbol(AppConfig::get('empty_symbol'), Symbol::TERMINAL);
 		return $this->equal($end);
 	}
 }

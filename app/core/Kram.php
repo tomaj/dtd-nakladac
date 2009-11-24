@@ -54,10 +54,10 @@ class Kram
 			//Logger::log('Top: ' . $top);
 			
 			// vyberieme zaciatok vstupu
-			$first = new Symbol($this->input[0], Symbol::TERMISymbol);
+			$first = new Symbol($this->input[0], Symbol::TERMINAL);
 			//Logger::log('Prvy: ' . $first);
 			
-			// ak je na vrchu zasobniku termiSymbol tak porovname so vstupom
+			// ak je na vrchu zasobniku TERMINAL tak porovname so vstupom
 			// ak sa zhoduju tak ich zrusime
 			if ($top->equal($first))
 			{

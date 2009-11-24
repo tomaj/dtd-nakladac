@@ -4,16 +4,15 @@
 #
 #
 
-termiSymboly:
+terminaly:
     - 'x'
     - 'y'
     - 'z'
     - 'e'
 
-koniec: e
 empty_symbol: e
 
 gramatika:
     - S -> yxXx | xSyy
-    - X -> yx | e
+    - X -> yYx | e
     - Y -> xxXz | yyYYy

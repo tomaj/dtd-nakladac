@@ -22,11 +22,11 @@ Logger::log('');
 
 $input = 'yxyxxzxx';
 
-$gramatika = new Gramatika(AppConfig::get('terminaly'), AppConfig::get('koniec'), AppConfig::get('gramatika'));
+$gramatika = new Gramatika(AppConfig::get('terminaly'), AppConfig::get('empty_symbol'), AppConfig::get('gramatika'));
 $table = $gramatika->getTable();
 
 $kram = new Kram($table);
-$result = $kram->validateInput($input, new Nal('S', Nal::NETERMINAL));
+$result = $kram->validateInput($input, new Symbol('S', Symbol::NETERMINAL));
 Logger::log($result);
 
 

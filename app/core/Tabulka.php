@@ -11,19 +11,19 @@ class Tabulka
 		$this->data = $data;
 	}
 	
-	public function get(Symbol $netermiSymbol, Symbol $termiSymbol)
+	public function get(Symbol $neterminal, Symbol $terminal)
 	{
 		foreach ($this->data as $tripple)
 		{
-			list($netermiSymbolActual, $termiSymbolActual, $result, $position) = $tripple;
-			if ($netermiSymbolActual == $netermiSymbol && $termiSymbolActual == $termiSymbol)
+			list($neterminalActual, $terminalActual, $result, $position) = $tripple;
+			if ($neterminalActual == $neterminal && $terminalActual == $terminal)
 			{
 				$this->lastPosition = $position;
 				return $result;
 			}
 		}
 		
-		throw new TableKeyNotFoundException("Nenasla sa hodnota pre kombinaciu [$netermiSymbol][$termiSymbol]");
+		throw new TableKeyNotFoundException("Nenasla sa hodnota pre kombinaciu [$neterminal][$terminal]");
 	}
 	
 	public function getLastPosition()
