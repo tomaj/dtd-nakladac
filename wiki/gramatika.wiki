@@ -1,0 +1,35 @@
+#labels gramatika
+#gramatika pre dtd
+
+= takto by nejak mohla vyzerat gramatika =
+
+{{{
+start -> '<!DOCTYPE' name '[' dtddocument ']>'
+dtddocument -> declaration next				// aby sme ich mohli nagenerovat nekonecne vela
+next -> declaration next | E					// raz treba aj skoncit  :) 
+declaration -> elemdec | attrdec				// deklarujeme element alebo atribut
+elemdec -> '<!ELEMENT' name innerelem '>'
+innerelem -> 'EMPTY' | 'ANY' | '(#PCDATA)' | elemchild
+elemchild -> '(' choice ')' count				// elementy mozeme mat v takomto tvare (a|b|c)
+elemchild -> '(' sequence ')' count				// alebo (a,b,c)
+choice -> item ch
+ch -> '|' choice | E						// nagenerovanie elementov oddelenych |
+sequence -> item seq
+seq -> ',' sequence | E						// nagenerovanie elementov oddelenych ciarkami
+item -> name count
+count -> '?' | '*' | '+' | E					// pocetnost elementu
+attrdec -> '<!ATTLIST' name specification '>'
+specification -> name attrtype default specification | E	// neviem preco to takto je napisane v tom zadani...
+										// v ATTLISTE moze ist za sebou viac tychto definicii?
+										// ja by som tam dal max 1 cize bez tej pravej rekurzie
+attrtype -> 'CDATA' | 'NMTOKEN' | 'IDREF'		// typy atributov
+default -> '#REQUIRED' | '#IMPLIED' | fix '"' word nextword '"'
+fix -> '#FIXED' | E							// vraj FIXED nemusi byt ?
+nextword -> word | E
+name -> letter namechar | '_' namechar | ':' namechar
+namechar -> letter namechar | digit namechar | '.' namechar | '-' namechar | '_' namechar | ':' namechar | E
+word -> char | char word
+char -> letter | digit						// vraj tu maju byt este nejake znaky ale to neviem ake  :) 
+letter -> 'A' | .. | 'Z' | 'a' | 'z'
+digit -> '0' | .. | '9'
+}}}
