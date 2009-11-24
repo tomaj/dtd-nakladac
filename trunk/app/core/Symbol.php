@@ -1,9 +1,9 @@
 <?php
 
-class Nal
+class Symbol
 {
-	const TERMINAL    = 1;
-	const NETERMINAL  = 2;
+	const TERMISymbol    = 1;
+	const NETERMISymbol  = 2;
 
 	protected $type;
 
@@ -24,15 +24,16 @@ class Nal
 	{
 		if (is_string($input))
 		{
-			$input = new Nal($input);
+			$input = new Symbol($input, Symbol::TERMISymbol);
 		}
 		
 		return $this->__toString() == $input->__toString();
 	}
 	
-	public function isEmptyTerminal()
+	public function isEmptySymbol()
 	{
-		$end = new Nal(AppConfig::get('koniec'), Nal::TERMINAL);
+		$end = new Symbol(AppConfig::get('empty_symbol'), Symbol::TERMISymbol);
+		var_dump($end);
 		return $this->equal($end);
 	}
 }

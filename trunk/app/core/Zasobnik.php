@@ -21,8 +21,8 @@ class Zasobnik
 			}
 		}
 		
-		// ukoncovaci prazdny terminal nebudeme vkladat do zasobnika
-		//if ($items->isEmptyTerminal()) return;
+		// ukoncovaci prazdny termiSymbol nebudeme vkladat do zasobnika
+		if ($items->isEmptySymbol()) return;
 		
 		Logger::log("Vkladam na vrch zasobnika '$items'");
 		

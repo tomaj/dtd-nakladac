@@ -23,7 +23,7 @@ class Kram
 		$this->table = $table;
 	}
 	
-	public function validateInput($input, Nal $start)
+	public function validateInput($input, Symbol $start)
 	{
 		$this->input = $input;
 		$this->zasobnik = new Zasobnik();
@@ -54,10 +54,10 @@ class Kram
 			//Logger::log('Top: ' . $top);
 			
 			// vyberieme zaciatok vstupu
-			$first = new Nal($this->input[0], Nal::TERMINAL);
+			$first = new Symbol($this->input[0], Symbol::TERMISymbol);
 			//Logger::log('Prvy: ' . $first);
 			
-			// ak je na vrchu zasobniku terminal tak porovname so vstupom
+			// ak je na vrchu zasobniku termiSymbol tak porovname so vstupom
 			// ak sa zhoduju tak ich zrusime
 			if ($top->equal($first))
 			{
