@@ -77,9 +77,9 @@ gramatika:
     - next -> declaration next | E                              # raz treba aj skoncit  :) 
     - declaration -> elemdec | attrdec                          # deklarujeme element alebo atribut
     - elemdec -> '<!ELEMENT' name innerelem '>'
-    - innerelem -> 'EMPTY' | 'ANY' | '(#PCDATA)' | elemchild
-    - elemchild -> '(' choice ')' count                         # elementy mozeme mat v takomto tvare (a|b|c)
-    - elemchild -> '(' sequence ')' count                       # alebo (a,b,c)
+    - innerelem -> 'EMPTY' | 'ANY' | '(#PCDATA)' | '(' elemchild ')' count
+    - elemchild -> item nextitem
+    - nextitem -> '|' choice | ',' sequence | E                 # elementy mozeme mat v takomto tvare (a|b|c) alebo (a,b,c)
     - choice -> item ch
     - ch -> '|' choice | E                                      # nagenerovanie elementov oddelenych |
     - sequence -> item seq
