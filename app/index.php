@@ -20,13 +20,16 @@ Logger::log('');
 Logger::log('Starting...');
 Logger::log('');
 
-$input = 'yxyxxzxx';
+
 
 $gramatika = new Gramatika(AppConfig::get('terminaly'), AppConfig::get('empty_symbol'), AppConfig::get('gramatika'));
 $table = $gramatika->getTable();
 
+$input = 'yxyxxzxx';
+$codeAnalyzer = new CodeAnalyzer($input);
+
 $kram = new Kram($table);
-$result = $kram->validateInput($input, new Symbol('S', Symbol::NETERMINAL));
+$result = $kram->validateInput($codeAnalyzer->getAnalyzedCode(), new Symbol('S', Symbol::NETERMINAL));
 Logger::log($result);
 
 

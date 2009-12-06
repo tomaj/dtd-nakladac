@@ -35,6 +35,11 @@ class Symbol
 		$end = new Symbol(AppConfig::get('empty_symbol'), Symbol::TERMINAL);
 		return $this->equal($end);
 	}
+	
+	public function getRepresentation()
+	{
+		return $this->representation;
+	}
 }
 
 ?>
