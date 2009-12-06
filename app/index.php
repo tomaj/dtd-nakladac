@@ -17,7 +17,7 @@ $logger = Logger::getInstance();
 $logger->addLogger(new ConsoleLogger());
 
 Logger::log('');
-Logger::log('Starting...');
+//Logger::log('Starting...');
 Logger::log('');
 
 
@@ -25,7 +25,14 @@ Logger::log('');
 $gramatika = new Gramatika(AppConfig::get('terminaly'), AppConfig::get('empty_symbol'), AppConfig::get('gramatika'));
 $table = $gramatika->getTable();
 
-$input = 'yxyxxzxx';
+echo $table->getHTMLTable();
+
+//print_r($table);
+die();
+
+$input = '<!DOCTYPE NEWSPAPER [ 
+<!ELEMENT NEWSPAPER (ARTICLE+)> 
+]>';
 $codeAnalyzer = new CodeAnalyzer($input);
 
 $kram = new Kram($table);

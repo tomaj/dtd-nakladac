@@ -36,6 +36,11 @@ class Symbol
 		return $this->equal($end);
 	}
 	
+	public function isTerminal()
+	{
+		return $this->type == Symbol::TERMINAL;
+	}
+	
 	public function getRepresentation()
 	{
 		return $this->representation;

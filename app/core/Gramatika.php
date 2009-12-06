@@ -2,7 +2,7 @@
 
 class Gramatika
 {
-	protected $TERMINALy;
+	protected $terminaly;
 	
 	protected $emptySymbol;
 	
@@ -10,7 +10,7 @@ class Gramatika
 
 	public function __construct(array $temiSymboly, $emptySymbol, array $gramatika)
 	{
-		$this->TERMINALy = $temiSymboly;
+		$this->terminaly = $temiSymboly;
 		$this->emptySymbol = $emptySymbol;
 		$this->gramatika = $gramatika;
 	}
@@ -32,8 +32,7 @@ class Gramatika
 			}
 		}
 		
-		//print_r($neterminaly);
-		//die();
+		
 		
 		// teraz hladame FIRST kazdeho pravidla a to pridavame do tabulky
 		$counter = 0;
@@ -43,13 +42,24 @@ class Gramatika
 			{
 				// vytvorime objekt symbol lebo v poli je to ako kluc len 'string'
 				$neterminalSymbol = new Symbol($neterminal, Symbol::NETERMINAL);
-			
+				
+				echo "getFirst(".$this->getTempPravidlo($pravidlo).", $neterminalSymbol)";
 				$first = $this->getFirst($pravidlo, $neterminaly, $neterminalSymbol);
+				
+				
+				//print_r($first);
+				//echo "---------\n";
 				
 				// pridame do tabulky
 				$position = $this->getPravidloNumber($pravidlo, $neterminaly);
 				
 				if (!is_array($first)) $first = array($first);
+				
+				//print_r($first);
+				echo "=".$this->getTempPravidlo($first);
+				echo "\n";
+				
+				
 				foreach ($first as $item)
 				{
 					$data[] = array($neterminalSymbol, $item, $pravidlo, $position);
@@ -59,9 +69,9 @@ class Gramatika
 			}
 		}
 		
-//		print_r($data);
+		print_r($data);
 		
-	//	die();
+		die();
 		
 		
 		// tmp table
@@ -74,7 +84,7 @@ class Gramatika
 			$tmpTable[$first->getRepresentation()][$second->getRepresentation()] = $row[3];
 		}
 		
-		print_R($tmpTable);
+		//print_R($tmpTable);
 
 		return new Tabulka($data);		
 
@@ -92,11 +102,29 @@ class Gramatika
 		*/
 	}
 	
+	protected function getTempPravidlo($pravidlo)
+	{
+		$result = "";
+		foreach ($pravidlo as $a)
+		{
+			$result .= $a->getRepresentation() . " ";
+		}
+		return $result;
+	}
+	
 	protected function getFirst($pravidlo, $neterminaly, $neterminal)
 	{
+		if (!is_array($pravidlo) || !$pravidlo[0])
+		{
+			throw new Exception('getFirst pre : ' . print_R($pravidlo, true) . ' sa neda spravit. nie je to pole, gramatika asi nie je LL1 ' . "\n");
+		}
 		if ($pravidlo[0]->isEmptySymbol())
 		{
 			return $this->getFollow($neterminaly, $neterminal);
+		}
+		if (!$pravidlo[0]->isTerminal())
+		{
+			return $this0<
 		}
 		return $pravidlo[0];
 	}
@@ -117,7 +145,23 @@ class Gramatika
 				
 					if ($pravidlo[$i]->equal($neterminal))
 					{
-						$result[] = $this->getFirst(array_slice($pravidlo, $i+1), $neterminaly, $neterminal);
+						$slice = array_slice($pravidlo, $i+1);
+						if (!$slice)
+						{
+							foreach ($neterminaly as $nt => $pp)
+							{
+								if ($neterminal == $nt)
+								{
+									foreach ($pp as $p)
+									{
+										$a = $this->getFirst($p, $neterminaly, $neterminalKey);
+										$result[] = $a;
+									}
+								}
+							}
+						}
+						//if (!$slice) throw new Exception("getFollow pre $neterminal sa neda spravit");
+						$result[] = $this->getFirst($slice, $neterminaly, $neterminal);
 					}
 				}
 			}
@@ -147,7 +191,9 @@ class Gramatika
 	// temporarana metoda zatial koli temporrarne tabulke ktora je napevno
 	protected function temp_SymbolFromString($input)
 	{
+	
 		$result = array();
+		/*
 		for ($i = 0; $i < strlen($input); $i++)
 		{
 			$char = $input[$i];
@@ -155,7 +201,21 @@ class Gramatika
 			if (in_array($char, $this->TERMINALy)) $type = Symbol::TERMINAL;
 			$result[] = new Symbol($char, $type);
 		}
+		*/
+		$parts = explode(' ', $input);
+		foreach ($parts as $part)
+		{
+			$type = Symbol::NETERMINAL;
+			if ($part[0] == "'" && $part[strlen($part)-1] == "'")
+			{
+				$type = Symbol::TERMINAL;
+				$part = substr($part, 1, strlen($part)-2);
+			}
+			
+			$result[] = new Symbol($part, $type);
+		}
 		return $result;
+		
 	}
 }
 
