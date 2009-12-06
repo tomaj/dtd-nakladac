@@ -1,0 +1,18 @@
+#
+#	Vseobecny config
+#
+#
+#
+
+terminaly:
+    - 'x'
+    - 'y'
+    - 'z'
+    - 'e'
+
+empty_symbol: e
+
+gramatika:
+    - S -> yxXx | xSyy
+    - X -> yYx | e
+    - Y -> xxXz | yyYYy
