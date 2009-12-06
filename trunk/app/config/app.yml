@@ -56,6 +56,16 @@ terminaly:
     - 'X'
     - 'Y'
     - 'Z'
+    - '1'
+    - '2'
+    - '3'	
+    - '4'
+    - '5'
+    - '6'
+    - '7'
+    - '8'
+    - '9'
+    - '0'
 	
 #    - 'E'
 
@@ -88,7 +98,7 @@ gramatika:
     - namechar -> letter namechar | digit namechar | '.' namechar | '-' namechar | '_' namechar | ':' namechar | E
     - word -> char | char word
     - char -> letter | digit                                    # vraj tu maju byt este nejake znaky ale to neviem ake  :) 
-    - letter -> 'A' | .. | 'Z' | 'a' | 'z'
-    - digit -> '0' | .. | '9'
+    - letter -> 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'Z' | 'X' | 'Y'
+    - digit -> '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
 
