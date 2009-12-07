@@ -33,6 +33,8 @@ class Tabulka
 		{
 			$first = $row[0];
 			$second = $row[1];
+			echo $first,"\n";
+			echo $second,"\n";
 			$tmpTable[$first->getRepresentation()][$second->getRepresentation()] = $row[3];
 		}
 		echo "<pre>";
