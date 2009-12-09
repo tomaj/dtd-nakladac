@@ -89,9 +89,10 @@ class Kram
 					//Logger::log('ERROR: Nenasiel sa v tabulke prechod '. $prechod);
 					//print_r($top);
 					//print_r($first);
-					$this->error = array('line' => $this->input[0]['line'], 'word' => $this->input[0]['line']);
+					
+					$this->error = $this->input[0];		
 					return false;
-					break;
+
 				}
 			}
 		

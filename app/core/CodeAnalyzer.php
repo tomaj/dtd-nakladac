@@ -17,6 +17,10 @@ class CodeAnalyzer
 		
 		$code = $this->addSpaces($this->code);
 		
+		$code = str_replace("\r", "\n", $code);
+		$code = str_replace("\n\n", "\n", $code);
+		
+		
 		$codeLength = strlen($code);
 		$buffer = '';
 		$line = 0;
@@ -26,9 +30,17 @@ class CodeAnalyzer
 			$char = $code[$i];
 			//echo $char;
 			
-			if (in_array($char, array(" ", "\n", "\t", "\r")))
+			if (in_array($char, array(" ", "\n", "\t")))
 			{
+				
+				if ($char == "\n")
+				{
+					$line++;
+					$word = 0;
+				}
+				
 				if ($buffer == '') continue;
+				
 				if (in_array($buffer, $terminaly))
 				{
 					$result[] = array("w" => $buffer, "line" => $line, "word" => $word);
@@ -40,13 +52,12 @@ class CodeAnalyzer
 						$result[] = array("w" => $buffer[$k], "line" => $line, "word" => $word);
 					}
 				}
+				
+				
 				$buffer = '';
-				if ($char == "\n" || $char == "\r")
-				{
-					$line++;
-					$word = 0;
-				}
 				$word++;
+				
+				
 			}
 			else
 			{

@@ -339,9 +339,14 @@ if (headers_sent()) {
 				
 				//print_r($kram->getError());
 				$error = $kram->getError();
+				//var_dump($error);
 				
-				echo "<code style=\"display:block; padding:3px; border:1px solid #EEEEEE\"><span><span>";
+				
+				//echo "<code style=\"display:block; padding:3px; border:1px solid #EEEEEE\"><span><span>";
+				echo "<pre><span><span>";
 				$vstup = $_POST['vstup'];
+				$vstup = str_replace("\r", "\n", $vstup);
+				$vstup = str_replace("\n\n", "\n", $vstup);
 				$lines = explode("\n", $vstup);
 				$l = 1;
 				foreach ($lines as $line)
@@ -349,20 +354,21 @@ if (headers_sent()) {
 					$line = htmlspecialchars($line);
 					if ($l-1 == $error['line'])
 					{
+					
 						$words = explode(' ', $line);
 						$al = array();
 						for ($i = 0; $i < count($words); $i++)
 						{
-							if ($i == $error['word']) $al[] = '<span class="hw">'.$words[$i].'</span>';
+							if ($i+1 == $error['word']) $al[] = '<span class="hw">'.$words[$i].'</span>';
 							else $al[] = $words[$i];
 						}
 						$line = implode(' ', $al);
 						
-						echo "<span class=\"highlight\">Line: $l:\n$line</span>";
+						echo "<span class=\"highlight\">Line:\t$l: $line</span>";
 					}
 					else
 					{
-						echo "<span class=\"line\">Line: $l:\n$line</span><br/>";
+						echo "<span class=\"line\">Line:\t$l: $line</span><br/>";
 					}
 					
 					$l++;
@@ -370,7 +376,7 @@ if (headers_sent()) {
 				//$vstup = str_replace("\r", "\n", $vstup);
 				
 				//echo htmlspecialchars($vstup);
-				echo "</span></span></code><br/><br/>";
+				echo "</span></span></pre><br/><br/>";
 			}
 			
 			
