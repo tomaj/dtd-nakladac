@@ -80,6 +80,7 @@ class CodeAnalyzer
 	{
 		$code = str_replace('>', ' >', $code);
 		$code = str_replace(',', ' , ', $code);
+		$code = str_replace('|', ' | ', $code);
 		$code = str_replace('(', ' ( ', $code);
 		$code = str_replace(')', ' ) ', $code);
 		// vratime spet jednu zmenu

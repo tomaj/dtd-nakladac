@@ -35,7 +35,7 @@ class Tabulka
 			$second = $row[1];
 			//var_dump($first);
 			//var_dump($second);
-			$tmpTable[$first->getRepresentation()][$second->getRepresentation()] = $row[3];
+			$tmpTable[$first->getRepresentation()][$second->getRepresentation()] = $this->getPrechod($row[3]);
 		}
 		/*
 		echo "<pre>";
@@ -96,6 +96,19 @@ class Tabulka
 	public function getLastPosition()
 	{
 		return $this->lastPosition;
+	}
+	
+	public function getPrechod($number)
+	{
+		foreach ($this->data as $tripple)
+		{
+			list($neterminalActual, $terminalActual, $result, $position) = $tripple;
+			if ($position == $number)
+			{
+				return $number . ' ' . implode(' ', $result);
+			}
+		}
+		return 'X';
 	}
 }
 

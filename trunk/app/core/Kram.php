@@ -78,9 +78,8 @@ class Kram
 				}
 				catch (TableKeyNotFoundException $tknfe)
 				{
-				
-				
-					Logger::log('ERROR: Nenasiel sa v tabulke prechod');
+
+					Logger::log('ERROR: Nenasiel sa v tabulke prechod '. $prechod);
 					print_r($top);
 					print_r($first);
 					break;

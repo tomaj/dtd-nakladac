@@ -39,25 +39,37 @@ $input = '<!DOCTYPE NEWSPAPER [
 */
 
 $input = '<!DOCTYPE NEWSPAPER [
-<!ELEMENT ARTICLE (HEADLINE,BYLINE,LEAD,BODY,NOTES)>
+<!ELEMENT NEWSPAPER (ARTICLE*,HEADLINE+,ASD?)>
 ]>';
 
 $codeAnalyzer = new CodeAnalyzer($input);
 $analyzedCode = $codeAnalyzer->getAnalyzedCode();
 print_r($analyzedCode);
 
+
 $gramatika = new Gramatika(AppConfig::get('terminaly'), AppConfig::get('empty_symbol'), AppConfig::get('gramatika'));
 $table = $gramatika->getTable();
 //print_r($table);
-echo $table->getHTMLTable();
-die();
-//print_r($table);
+/*
+echo "<pre>";
+$firsts = $gramatika->getFirsts();
+print_r($firsts);
+echo "</pre>";
+*/
 //die();
 
 
+echo $table->getHTMLTable();
+//die();
+
+//print_r($table);
+//die();
+
+echo "<pre>";
 $kram = new Kram($table);
 $result = $kram->validateInput($codeAnalyzer->getAnalyzedCode(), new Symbol('S', Symbol::NETERMINAL));
 Logger::log($result);
+echo "</pre>";
 
 
 
