@@ -10,6 +10,8 @@ class Gramatika
 
 	protected $firsts = array();
 	
+	protected $follows = array();
+	
 	public function __construct(array $temiSymboly, $emptySymbol, array $gramatika)
 	{
 		$this->terminaly = $temiSymboly;
@@ -112,6 +114,7 @@ class Gramatika
 			if ($first->isEmptySymbol())
 			{
 				$r = $this->getFollow($neterminal, $neterminaly, $level);
+				$this->follows[$rep] = $r;
 				
 				$result = array_merge($result, $r);
 			}
@@ -257,6 +260,24 @@ class Gramatika
 		$result = array();
 		//print_r($this->firsts);
 		foreach ($this->firsts as $key => $values)
+		{
+			foreach ($values as $value)
+			{
+				$v = $value->getRepresentation();
+				if (!isset($result[$key]) || !in_array($v, $result[$key]))
+				{
+					$result[$key][] = $v;
+				}
+			}
+		}
+		return $result;
+	}
+	
+	public function getFollows()
+	{
+		$result = array();
+		//print_r($this->firsts);
+		foreach ($this->follows as $key => $values)
 		{
 			foreach ($values as $value)
 			{

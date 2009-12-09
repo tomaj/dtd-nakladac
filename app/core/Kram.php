@@ -18,6 +18,8 @@ class Kram
 	
 	protected $maxIteration = 1000;
 	
+	protected $result = array();
+	
 	public function __construct(Tabulka $table)
 	{
 		$this->table = $table;
@@ -31,12 +33,14 @@ class Kram
 		Logger::log("Idem validovat vstup '".implode(' ',$input)."'");
 		Logger::log("Zacitaocny symbol:   '$start'");
 		
-		echo $this;
+		//echo $this;
+		$this->logState();
 		
 		// vlozime zaciatocny symbol na vrch zasobnika
 		$this->zasobnik->push($start);
 		
-		echo $this;
+		//echo $this;
+		$this->logState();
 		
 		$counter = 0;
 		
@@ -78,25 +82,36 @@ class Kram
 				}
 				catch (TableKeyNotFoundException $tknfe)
 				{
-
 					Logger::log('ERROR: Nenasiel sa v tabulke prechod '. $prechod);
-					print_r($top);
-					print_r($first);
+					//print_r($top);
+					//print_r($first);
 					break;
 				}
 			}
 		
-			echo $this;
+			//echo $this;
+			$this->logState();
 			Logger::log('----------------');
 			
 			$counter++;
 		}
+		
+		return $this->result;
 	}
 	
 	public function __toString()
 	{
 		$result = '(' . implode(' ',$this->input) . ',' . $this->zasobnik . ',' . implode(' ', $this->path) . ')' . "\n";
-		return $result;		
+		return $result;
+	}
+	
+	protected function logState()
+	{
+		$this->result[] = array(
+			'input' => implode(' ', $this->input),
+			'stack' => $this->zasobnik->__toString(),
+			'path' => implode(' ', $this->path),
+		);
 	}
 }
 
