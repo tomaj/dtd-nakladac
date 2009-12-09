@@ -211,8 +211,8 @@ if (headers_sent()) {
 		}
 
 		.highlight, #error {
-			background: red;
-			color: white;
+			background: #C9D7F1;
+			color: black;
 			font-weight: bold;
 			font-style: normal;
 			display: block;
@@ -303,7 +303,9 @@ if (headers_sent()) {
 	
 	<?php _netteOpenPanel('Vstup', FALSE) ?>
 		<form method="post" action="">
+			<h3>Sem zadajte vašu DTD schému</h3>
 			<textarea rows="10" cols="60" name="vstup"><?php if (isset($_POST['vstup'])) echo htmlspecialchars($_POST['vstup']); ?></textarea>
+			<br/>
 			<input name="submit" type="submit" value="Odošli" />
 		</form>
 	<?php _netteClosePanel() ?>
