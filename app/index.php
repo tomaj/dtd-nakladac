@@ -24,16 +24,35 @@ Logger::log('');
 $input = '<!DOCTYPE NEWSPAPER [ 
 <!ELEMENT NEWSPAPER (ARTICLE+)> 
 ]>';
-$codeAnalyzer = new CodeAnalyzer($input);
+/*
+// <!ELEMENT ARTICLE (HEADLINE,BYLINE,LEAD,BODY,NOTES)>
+<!ELEMENT NEWSPAPER (ARTICLE+)>
+<!ELEMENT HEADLINE (#PCDATA)>
+<!ELEMENT BYLINE (#PCDATA)>
+<!ELEMENT LEAD (#PCDATA)>
+<!ELEMENT BODY (#PCDATA)>
+<!ELEMENT NOTES (#PCDATA)> 
+<!ATTLIST ARTICLE DATE CDATA #IMPLIED>
+<!ATTLIST ARTICLE EDITION CDATA #IMPLIED>
+<!ATTLIST ARTICLE EDITOR CDATA #IMPLIED>
+<!ATTLIST ARTICLE DATE CDATA #IMPLIED>
+*/
 
+$input = '<!DOCTYPE NEWSPAPER [
+<!ELEMENT ARTICLE (HEADLINE,BYLINE,LEAD,BODY,NOTES)>
+]>';
+
+$codeAnalyzer = new CodeAnalyzer($input);
+$analyzedCode = $codeAnalyzer->getAnalyzedCode();
+print_r($analyzedCode);
 
 $gramatika = new Gramatika(AppConfig::get('terminaly'), AppConfig::get('empty_symbol'), AppConfig::get('gramatika'));
 $table = $gramatika->getTable();
 //print_r($table);
-//echo $table->getHTMLTable();
+echo $table->getHTMLTable();
+die();
 //print_r($table);
 //die();
-
 
 
 $kram = new Kram($table);

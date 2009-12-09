@@ -10,7 +10,7 @@ terminaly:
     - 'EMPTY'
     - '>'
     - 'ANY'	
-    - "'(#PCDATA)'"
+    - "(#PCDATA)"
     - '('
     - ')'
     - '|'
@@ -22,8 +22,8 @@ terminaly:
     - 'CDATA'
     - 'NMTOKEN'
     - 'IDREF'
-    - "'#REQUIRED'"
-    - "'#IMPLIED'"
+    - "#REQUIRED"
+    - "#IMPLIED"
     - '"'
     - '_'
     - ':'
@@ -50,6 +50,7 @@ terminaly:
     - 'T'
     - 'U'
     - 'V'
+    - 'W'
     - 'Z'
     - 'X'
     - 'Y'
@@ -64,6 +65,7 @@ terminaly:
     - '8'
     - '9'
     - '0'
+    - 'nil'
 	
 #    - 'E'
 
@@ -85,18 +87,19 @@ gramatika:
     - item -> name count
     - count -> '?' | '*' | '+' | 'nil'                              # pocetnost elementu
     - attrdec -> '<!ATTLIST' name specification '>'
-    - specification -> name attrtype default specification | 'nil'  # neviem preco to takto je napisane v tom zadani...
+    - specification -> attrtype default specification | 'nil'  # neviem preco to takto je napisane v tom zadani...
                                                                 # v ATTLISTE moze ist za sebou viac tychto definicii?
                                                                 # ja by som tam dal max 1 cize bez tej pravej rekurzie
     - attrtype -> 'CDATA' | 'NMTOKEN' | 'IDREF'                 # typy atributov
-    - "default -> '#REQUIRED' | '#IMPLIED' | fix '"' word nextword '"'"
+    - "default -> '#REQUIRED' | '#IMPLIED'"
+#  | fix '"' word nextword '"'"
     - "fix -> '#FIXED' | 'nil'"
     - nextword -> word | 'nil'
     - name -> letter namechar | '_' namechar | ':' namechar
     - namechar -> letter namechar | digit namechar | '.' namechar | '-' namechar | '_' namechar | ':' namechar | 'nil'
     - word -> char | char word
     - char -> letter | digit                                    # vraj tu maju byt este nejake znaky ale to neviem ake  :) 
-    - letter -> 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'Z' | 'X' | 'Y'
+    - letter -> 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'Z' | 'X' | 'Y'
     - digit -> '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 
 
