@@ -105,7 +105,7 @@ class Tabulka
 			list($neterminalActual, $terminalActual, $result, $position) = $tripple;
 			if ($position == $number)
 			{
-				return $number . ' ' . implode(' ', $result);
+				return $number /*. ' ' . implode(' ', $result)*/;
 			}
 		}
 		return 'X';
