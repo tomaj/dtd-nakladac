@@ -238,6 +238,9 @@ if (headers_sent()) {
 			color:red;
 			font-weight:bold;
 		}
+		.hw {
+			color:red;
+		}
 
 	/* ]]> */
 	</style>
@@ -334,6 +337,40 @@ if (headers_sent()) {
 			{
 				echo "<h3 class=\"reserror\">CHYBA!</h3>";
 				
+				//print_r($kram->getError());
+				$error = $kram->getError();
+				
+				echo "<code style=\"display:block; padding:3px; border:1px solid #EEEEEE\"><span><span>";
+				$vstup = $_POST['vstup'];
+				$lines = explode("\n", $vstup);
+				$l = 1;
+				foreach ($lines as $line)
+				{
+					$line = htmlspecialchars($line);
+					if ($l-1 == $error['line'])
+					{
+						$words = explode(' ', $line);
+						$al = array();
+						for ($i = 0; $i < count($words); $i++)
+						{
+							if ($i == $error['word']) $al[] = '<span class="hw">'.$words[$i].'</span>';
+							else $al[] = $words[$i];
+						}
+						$line = implode(' ', $al);
+						
+						echo "<span class=\"highlight\">Line: $l:\n$line</span>";
+					}
+					else
+					{
+						echo "<span class=\"line\">Line: $l:\n$line</span><br/>";
+					}
+					
+					$l++;
+				}
+				//$vstup = str_replace("\r", "\n", $vstup);
+				
+				//echo htmlspecialchars($vstup);
+				echo "</span></span></code><br/><br/>";
 			}
 			
 			
@@ -350,9 +387,6 @@ if (headers_sent()) {
 			}
 			
 			echo "</table>";
-			
-			
-			//echo $result;
 			
 			_netteClosePanel();
 		}
