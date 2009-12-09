@@ -36,7 +36,8 @@ class CodeAnalyzer
 				if ($char == "\n")
 				{
 					$line++;
-					$word = 0;
+					$word = 1;
+					
 				}
 				
 				if ($buffer == '') continue;
@@ -57,6 +58,7 @@ class CodeAnalyzer
 				$buffer = '';
 				$word++;
 				
+				if ($char == "\n") $word = 1;
 				
 			}
 			else
