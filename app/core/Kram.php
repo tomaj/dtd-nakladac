@@ -85,6 +85,7 @@ class Kram
 					Logger::log('ERROR: Nenasiel sa v tabulke prechod '. $prechod);
 					//print_r($top);
 					//print_r($first);
+					return false;
 					break;
 				}
 			}
@@ -96,6 +97,11 @@ class Kram
 			$counter++;
 		}
 		
+		return true;
+	}
+	
+	public function getResult()
+	{
 		return $this->result;
 	}
 	
@@ -109,7 +115,7 @@ class Kram
 	{
 		$this->result[] = array(
 			'input' => implode(' ', $this->input),
-			'stack' => $this->zasobnik->__toString(),
+			'stack' => $this->zasobnik->getOutput(),
 			'path' => implode(' ', $this->path),
 		);
 	}
