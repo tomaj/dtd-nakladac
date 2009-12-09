@@ -269,8 +269,10 @@ if (headers_sent()) {
 
 <body>
 	<div id="error" class="panel">
-		<h1>DTD Nakladač</h1>
-		<p>silná aplikácia nakladacia DTD schému skrz astrálne aspektý prekladačové...</p>
+		<!--<h1>DTD Nakladač</h1>
+		<p>silná aplikácia nakladacia DTD schému skrz astrálne aspektý prekladačové...</p>-->
+		<h1>Syntaktický analyzátor jazyka basicDTD</h1>
+		<p>Zadanie z predmetu Návrh prekladačov</p>
 	</div>
 
 	<?php _netteOpenPanel('Gramatika', TRUE) ?>
@@ -299,6 +301,7 @@ if (headers_sent()) {
 		</table>
 	<?php _netteClosePanel() ?>
 	
+<!--
 	<?php _netteOpenPanel('Tabuľka / First&Follow', TRUE) ?>
 		<h3>Tabuľka</h3>
 		<?php echo $table->getHTMLTable(); ?>
@@ -315,7 +318,7 @@ if (headers_sent()) {
 			<?php endforeach; ?>
 		</table>
 	<?php _netteClosePanel() ?>
-	
+-->
 	<?php _netteOpenPanel('Vstup', FALSE) ?>
 		<form method="post" action="">
 			<h3>Sem zadajte vašu DTD schému</h3>
