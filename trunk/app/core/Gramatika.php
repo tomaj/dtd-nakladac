@@ -134,9 +134,10 @@ class Gramatika
 	
 	protected function getFirst(Symbol $neterminal, array $pravidlo, array $neterminaly, $level = 0)
 	{
+		/*
 		for ($i=0; $i<$level; $i++) echo " ";
 		echo "getFirst(" . $neterminal->getRepresentation() . ",".$this->getTempPravidlo($pravidlo).")\n";
-		
+		*/
 	
 		$result = array();
 		
@@ -179,19 +180,12 @@ class Gramatika
 		$tmpResult = $this->getTempPravidlo($result);
 		
 		/*
-		foreach ($result as $a)
-		{
-			//print_R($a);
-			
-			$tmpResult[] = $this->getTempPravidlo($a);
-		}
-		var_dump($tmpResult);*/
 		if ($tmpResult)
 		{
 			for ($i=0; $i<$level; $i++) echo " ";
 			echo "=={".$tmpResult."}\n";
 		}
-		
+		*/
 		//echo "RETURNING GETFIRST:";
 		//var_dump($result);
 		
@@ -200,8 +194,10 @@ class Gramatika
 	
 	protected function getFollow(Symbol $neterminal, array $neterminaly, $level = 1)
 	{
+		/*
 		for ($i=0; $i<$level; $i++) echo " ";
 		echo "getFollow(" . $neterminal->getRepresentation() . ")\n";
+		*/
 		
 		//$neterminal = new Symbol($neterminal, Symbol::NETERMINAL);
 		if ($neterminal->equal(new Symbol('S', Symbol::NETERMINAL))) return array(new Symbol(AppConfig::get('empty_symbol'), Symbol::TERMINAL));
@@ -267,70 +263,7 @@ class Gramatika
 		return $result;
 	}
 	
-	/*
-	protected function getFirst($pravidlo, $neterminaly, $neterminal)
-	{
-		if (!is_array($pravidlo) || !$pravidlo[0])
-		{
-			throw new Exception('getFirst pre : ' . print_R($pravidlo, true) . ' sa neda spravit. nie je to pole, gramatika asi nie je LL1 ' . "\n");
-		}
-		if ($pravidlo[0]->isEmptySymbol())
-		{
-			return $this->getFollow($neterminaly, $neterminal);
-		}
-		if (!$pravidlo[0]->isTerminal())
-		{
-			
-		}
-		return $pravidlo[0];
-	}
-	*/
-	/*
-	protected function getFollow($neterminaly, $neterminal)
-	{
-		$result = array();
-		
-//		echo "neterminal->$neterminal\n";
-		
-		foreach ($neterminaly as $neterminalKey => $pravidla)
-		{
-			foreach ($pravidla as $pravidlo)
-			{
-				for ($i = 0; $i < count($pravidlo); $i++)
-				{
-					//echo "{$pravidlo[$i]} == {$neterminal} \n";
-				
-					if ($pravidlo[$i]->equal($neterminal))
-					{
-						$slice = array_slice($pravidlo, $i+1);
-						if (!$slice)
-						{
-							foreach ($neterminaly as $nt => $pp)
-							{
-								if ($neterminal == $nt)
-								{
-									foreach ($pp as $p)
-									{
-										$a = $this->getFirst($p, $neterminaly, $neterminalKey);
-										$result[] = $a;
-									}
-								}
-							}
-						}
-						//if (!$slice) throw new Exception("getFollow pre $neterminal sa neda spravit");
-						$result[] = $this->getFirst($slice, $neterminaly, $neterminal);
-					}
-				}
-			}
-		}
-
-		//print_r($result);
-		
-		//die();
-		
-		return $result;
-	}
-	*/
+	
 	protected function getPravidloNumber($pravidlo, $neterminaly)
 	{
 		$counter = 0;

@@ -28,7 +28,7 @@ class Kram
 		$this->input = $input;
 		$this->zasobnik = new Zasobnik();
 	
-		Logger::log("Idem validovat vstup '$input'");
+		Logger::log("Idem validovat vstup '".implode(' ',$input)."'");
 		Logger::log("Zacitaocny symbol:   '$start'");
 		
 		echo $this;
@@ -43,7 +43,7 @@ class Kram
 		while ($counter < $this->maxIteration)
 		{
 			// overime ci sme u nespracovali cely vstup
-			if (strlen($this->input) == 0)
+			if (count($this->input) == 0)
 			{
 				Logger::log('ZPRACOVANE: OK');
 				break;
@@ -62,7 +62,8 @@ class Kram
 			if ($top->equal($first))
 			{
 				// vyhodime zaciatok vstupu
-				$this->input = substr($this->input, 1);
+				array_shift($this->input);
+				//$this->input = substr($this->input, 1);
 			}
 			// ak sa nezhoduju tak pozrieme do tabulky prechodov
 			// obsah vlozime na vrch zasobnika
@@ -75,8 +76,13 @@ class Kram
 					$this->zasobnik->push($prechod);
 					$this->path[] = $this->table->getLastPosition();
 				}
-				catch (TableKeyNotFoundException $tknfe) {
+				catch (TableKeyNotFoundException $tknfe)
+				{
+				
+				
 					Logger::log('ERROR: Nenasiel sa v tabulke prechod');
+					print_r($top);
+					print_r($first);
 					break;
 				}
 			}
@@ -90,7 +96,7 @@ class Kram
 	
 	public function __toString()
 	{
-		$result = '(' . $this->input . ',' . $this->zasobnik . ',' . implode(' ', $this->path) . ')' . "\n";
+		$result = '(' . implode(' ',$this->input) . ',' . $this->zasobnik . ',' . implode(' ', $this->path) . ')' . "\n";
 		return $result;		
 	}
 }
