@@ -9,11 +9,9 @@ terminaly:
     - '<!ELEMENT'
     - 'EMPTY'
     - '>'
-    - '>'
-	
     - 'ANY'	
-    - '(#PCDATA)'
-    - '(' 
+    - "'(#PCDATA)'"
+    - '('
     - ')'
     - '|'
     - ','
@@ -24,8 +22,8 @@ terminaly:
     - 'CDATA'
     - 'NMTOKEN'
     - 'IDREF'
-    - '#REQUIRED'
-    - '#IMPLIED'
+    - "'#REQUIRED'"
+    - "'#IMPLIED'"
     - '"'
     - '_'
     - ':'
@@ -77,7 +75,7 @@ gramatika:
     - next -> declaration next | 'nil'                           # raz treba aj skoncit  :) 
     - declaration -> elemdec | attrdec                          # deklarujeme element alebo atribut
     - elemdec -> '<!ELEMENT' name innerelem '>'
-    - innerelem -> 'EMPTY' | 'ANY' | '(#PCDATA)' | '(' elemchild ')' count
+    - "innerelem -> 'EMPTY' | 'ANY' | '(#PCDATA)' | '(' elemchild ')' count"
     - elemchild -> item nextitem
     - nextitem -> '|' choice | ',' sequence | 'nil'                 # elementy mozeme mat v takomto tvare (a|b|c) alebo (a,b,c)
     - choice -> item ch
@@ -91,8 +89,8 @@ gramatika:
                                                                 # v ATTLISTE moze ist za sebou viac tychto definicii?
                                                                 # ja by som tam dal max 1 cize bez tej pravej rekurzie
     - attrtype -> 'CDATA' | 'NMTOKEN' | 'IDREF'                 # typy atributov
-    - default -> '#REQUIRED' | '#IMPLIED' | fix '"' word nextword '"'
-    - fix -> '#FIXED' | 'nil'                                      # vraj FIXED nemusi byt ?
+    - "default -> '#REQUIRED' | '#IMPLIED' | fix '"' word nextword '"'"
+    - "fix -> '#FIXED' | 'nil'"
     - nextword -> word | 'nil'
     - name -> letter namechar | '_' namechar | ':' namechar
     - namechar -> letter namechar | digit namechar | '.' namechar | '-' namechar | '_' namechar | ':' namechar | 'nil'

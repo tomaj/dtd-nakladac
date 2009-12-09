@@ -23,7 +23,7 @@ class Gramatika
 		// vyberieme startovacie neterminaly a pridame k im ich pravidla
 		$neterminaly = array();
 		foreach ($this->gramatika as $line)
-		{
+		{		
 			list($neterminal, $right) = explode(' -> ', $line);
 			$rightItems = explode(' | ', $right);
 			foreach ($rightItems as $item)
@@ -31,6 +31,7 @@ class Gramatika
 				$neterminaly[$neterminal][] = $this->temp_SymbolFromString($item);
 			}
 		}
+		
 		
 		//print_r($neterminaly);
 		//die();
@@ -46,7 +47,7 @@ class Gramatika
 				
 				//echo "getFirst(".$this->getTempPravidlo($pravidlo).", $neterminalSymbol)";
 				$first = $this->getFirst($neterminalSymbol, $pravidlo, $neterminaly);
-				
+				//var_dump($first);
 				
 				//print_r($first);
 				//echo "---------\n";
@@ -64,8 +65,12 @@ class Gramatika
 				foreach ($first as $item)
 				{
 					$k = $item;
+					if ($k == NULL) die('visiele null');
+					//var_dump($k);
+					/*
 					if (isset($item[0])) $k = $item[0];
 					if (is_array($k)) $k = $k[0];
+					*/
 					$data[] = array($neterminalSymbol, $k, $pravidlo, $position);
 				}
 				
@@ -114,12 +119,20 @@ class Gramatika
 		
 		foreach ($pravidlo as $a)
 		{
+			if (!$a instanceof Symbol)
+			{
+				echo "symbol:";
+				var_dump($a);
+				//print_r(debug_backtrace());
+				die("chybaaaa");
+			}
+			
 			$result .= $a->getRepresentation() . " ";
 		}
 		return $result;
 	}
 	
-	protected function getFirst($neterminal, $pravidlo, $neterminaly, $level = 0)
+	protected function getFirst(Symbol $neterminal, array $pravidlo, array $neterminaly, $level = 0)
 	{
 		for ($i=0; $i<$level; $i++) echo " ";
 		echo "getFirst(" . $neterminal->getRepresentation() . ",".$this->getTempPravidlo($pravidlo).")\n";
@@ -134,20 +147,20 @@ class Gramatika
 			{
 				//die("empty - follow");
 				$r = $this->getFollow($neterminal, $neterminaly, $level);
-				$result = array_merge($result, array($r));
+				$result = array_merge($result, $r);
 			}
 			else
 			{
-				$result[] = array($first);
+				$result[] = $first;
 			}
 			//return $first;
 		}
 		else
 		{
 			// najdeme pravidlo ktore vedi z toho neterminalu
-			foreach ($neterminaly as $neterminal => $data)
+			foreach ($neterminaly as $nt => $data)
 			{
-				if ($neterminal == $first->getRepresentation())
+				if ($nt == $first->getRepresentation())
 				{
 				//	print_r($data);
 					foreach ($data as $newPravidlo)
@@ -162,24 +175,30 @@ class Gramatika
 			//print_r($result);
 		}
 		
-		
-		
 		$tmpResult = array();
+		$tmpResult = $this->getTempPravidlo($result);
+		
+		/*
 		foreach ($result as $a)
 		{
 			//print_R($a);
+			
 			$tmpResult[] = $this->getTempPravidlo($a);
 		}
+		var_dump($tmpResult);*/
 		if ($tmpResult)
 		{
 			for ($i=0; $i<$level; $i++) echo " ";
-			echo "=={".implode(',', $tmpResult)."}\n";
+			echo "=={".$tmpResult."}\n";
 		}
+		
+		//echo "RETURNING GETFIRST:";
+		//var_dump($result);
 		
 		return $result;
 	}
 	
-	protected function getFollow($neterminal, $neterminaly, $level = 1)
+	protected function getFollow(Symbol $neterminal, array $neterminaly, $level = 1)
 	{
 		for ($i=0; $i<$level; $i++) echo " ";
 		echo "getFollow(" . $neterminal->getRepresentation() . ")\n";
@@ -190,6 +209,8 @@ class Gramatika
 		$result = array();
 		foreach ($neterminaly as $neterminalyKey => $pravidla)
 		{
+			if ($neterminalyKey == $neterminal->getRepresentation()) continue;
+			
 			foreach ($pravidla as $pravidlo)
 			{
 				for ($i = 0; $i < count($pravidlo); $i++)
@@ -199,24 +220,38 @@ class Gramatika
 					{
 						//echo "XXXX\n";
 						$slice = array_slice($pravidlo, $i+1);
-						if ($i < count($pravidlo)-2)
+						//echo "slice:";
+						//var_dump($slice);
+						if ($i < count($pravidlo)-1)
 						{
+							//echo "X";
 							foreach ($neterminaly as $nt => $pp)
 							{
 								if ($neterminal->getRepresentation() == $nt)
 								{
 									foreach ($pp as $p)
 									{
-										$a = $this->getFirst(new Symbol($neterminalKey, Symbol::NETERMINAL), $p, $neterminaly);
+										$a = $this->getFirst(new Symbol($nt, Symbol::NETERMINAL), $slice, $neterminaly, $level+1);
+										//return array($a);
 										$result = array_merge($result, $a);
+										//var_dump($result);
+										//var_dump($result);
 									}
 								}
 							}
 						}
 						else
 						{
+							//echo "B";
 							$a = $this->getFollow(new Symbol($neterminalyKey, Symbol::NETERMINAL), $neterminaly, $level+1);
+							
+							//echo "RETURNING GETFOLLOW";
+							//var_dump($a);
+							
 							return $a;
+							
+							var_dump($a);
+							return array_merge($result, $a);
 							//$result = array_merge($result, $a);
 							//var_dump($result);
 							
@@ -225,6 +260,10 @@ class Gramatika
 				}
 			}
 		}
+		
+		//echo "RETURNING GETFOLLOW";
+		//var_dump($result);
+		
 		return $result;
 	}
 	

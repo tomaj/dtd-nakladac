@@ -21,21 +21,20 @@ Logger::log('');
 Logger::log('');
 
 
-
-$gramatika = new Gramatika(AppConfig::get('terminaly'), AppConfig::get('empty_symbol'), AppConfig::get('gramatika'));
-$table = $gramatika->getTable();
-
-print_r($table);
-
-echo $table->getHTMLTable();
-
-//print_r($table);
-die();
-
 $input = '<!DOCTYPE NEWSPAPER [ 
 <!ELEMENT NEWSPAPER (ARTICLE+)> 
 ]>';
 $codeAnalyzer = new CodeAnalyzer($input);
+
+
+$gramatika = new Gramatika(AppConfig::get('terminaly'), AppConfig::get('empty_symbol'), AppConfig::get('gramatika'));
+$table = $gramatika->getTable();
+//print_r($table);
+//echo $table->getHTMLTable();
+//print_r($table);
+//die();
+
+
 
 $kram = new Kram($table);
 $result = $kram->validateInput($codeAnalyzer->getAnalyzedCode(), new Symbol('S', Symbol::NETERMINAL));

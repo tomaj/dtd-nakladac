@@ -33,14 +33,15 @@ class Tabulka
 		{
 			$first = $row[0];
 			$second = $row[1];
-			echo $first,"\n";
-			echo $second,"\n";
+			//var_dump($first);
+			//var_dump($second);
 			$tmpTable[$first->getRepresentation()][$second->getRepresentation()] = $row[3];
 		}
+		/*
 		echo "<pre>";
 		print_r($tmpTable);
 		echo "</pre>";
-		
+		*/
 		$content = '<html><body>';
 		$content .= '<table BORDER>';
 		
