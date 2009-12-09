@@ -54,7 +54,6 @@ terminaly:
     - 'Z'
     - 'X'
     - 'Y'
-    - 'Z'
     - '1'
     - '2'
     - '3'	
@@ -93,7 +92,7 @@ gramatika:
     - attrtype -> 'CDATA' | 'NMTOKEN' | 'IDREF'                 # typy atributov
     - "default -> '#REQUIRED' | '#IMPLIED'"
 #  | fix '"' word nextword '"'"
-    - "fix -> '#FIXED' | 'nil'"
+   # - "fix -> '#FIXED' | 'nil'"
     - nextword -> word | 'nil'
     - name -> letter namechar | '_' namechar | ':' namechar
     - namechar -> letter namechar | digit namechar | '.' namechar | '-' namechar | '_' namechar | ':' namechar | 'nil'
