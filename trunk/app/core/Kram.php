@@ -20,6 +20,8 @@ class Kram
 	
 	protected $result = array();
 	
+	protected $error = false;
+	
 	public function __construct(Tabulka $table)
 	{
 		$this->table = $table;
@@ -29,9 +31,11 @@ class Kram
 	{
 		$this->input = $input;
 		$this->zasobnik = new Zasobnik();
+		
+		//var_dump($this->input);
 	
-		Logger::log("Idem validovat vstup '".implode(' ',$input)."'");
-		Logger::log("Zacitaocny symbol:   '$start'");
+		//Logger::log("Idem validovat vstup '".implode(' ',$input)."'");
+		//Logger::log("Zacitaocny symbol:   '$start'");
 		
 		//echo $this;
 		$this->logState();
@@ -51,14 +55,14 @@ class Kram
 			{
 				Logger::log('ZPRACOVANE: OK');
 				break;
-			}
+			}			
 		
 			// vybereiem vrch zasobnika
 			$top = $this->zasobnik->removeTop();
 			//Logger::log('Top: ' . $top);
 			
 			// vyberieme zaciatok vstupu
-			$first = new Symbol($this->input[0], Symbol::TERMINAL);
+			$first = new Symbol($this->input[0]['w'], Symbol::TERMINAL);
 			//Logger::log('Prvy: ' . $first);
 			
 			// ak je na vrchu zasobniku TERMINAL tak porovname so vstupom
@@ -82,9 +86,10 @@ class Kram
 				}
 				catch (TableKeyNotFoundException $tknfe)
 				{
-					Logger::log('ERROR: Nenasiel sa v tabulke prechod '. $prechod);
+					//Logger::log('ERROR: Nenasiel sa v tabulke prechod '. $prechod);
 					//print_r($top);
 					//print_r($first);
+					$this->error = array('line' => $this->input[0]['line'], 'word' => $this->input[0]['line']);
 					return false;
 					break;
 				}
@@ -107,17 +112,27 @@ class Kram
 	
 	public function __toString()
 	{
-		$result = '(' . implode(' ',$this->input) . ',' . $this->zasobnik . ',' . implode(' ', $this->path) . ')' . "\n";
+		$r = array();
+		foreach ($this->input as $a) $r[] = $a['w'];
+		$result = '(' . implode(' ', $r) . ',' . $this->zasobnik . ',' . implode(' ', $this->path) . ')' . "\n";
 		return $result;
 	}
 	
 	protected function logState()
 	{
+		$r = array();
+		foreach ($this->input as $a) $r[] = $a['w'];
+		
 		$this->result[] = array(
-			'input' => implode(' ', $this->input),
+			'input' => implode(' ', $r),
 			'stack' => $this->zasobnik->getOutput(),
 			'path' => implode(' ', $this->path),
 		);
+	}
+	
+	public function getError()
+	{
+		return $this->error;
 	}
 }
 

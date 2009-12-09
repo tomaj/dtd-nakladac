@@ -19,6 +19,8 @@ class CodeAnalyzer
 		
 		$codeLength = strlen($code);
 		$buffer = '';
+		$line = 0;
+		$word = 0;
 		for ($i = 0; $i < $codeLength; $i++)
 		{
 			$char = $code[$i];
@@ -29,18 +31,22 @@ class CodeAnalyzer
 				if ($buffer == '') continue;
 				if (in_array($buffer, $terminaly))
 				{
-					//echo "terminal: " . $buffer . "\n";
-					$result[] = $buffer;
+					$result[] = array("w" => $buffer, "line" => $line, "word" => $word);
 				}
 				else
 				{
-					//echo "nezname: " . $buffer . "\n";
 					for ($k = 0; $k < strlen($buffer); $k++)
 					{
-						$result[] = $buffer[$k];
+						$result[] = array("w" => $buffer[$k], "line" => $line, "word" => $word);
 					}
 				}
 				$buffer = '';
+				if ($char == "\n" || $char == "\r")
+				{
+					$line++;
+					$word = 0;
+				}
+				$word++;
 			}
 			else
 			{
@@ -49,26 +55,19 @@ class CodeAnalyzer
 		}
 		if (in_array($buffer, $terminaly))
 		{
-			//echo "terminal: " . $buffer . "\n";
-			$result[] = $buffer;
+			$result[] = array("w" => $buffer, "line" => $line, "word" => $word);
 		}
 		else
 		{
-			//echo "nezname: " . $buffer . "\n";
 			for ($k = 0; $k < strlen($buffer); $k++)
 			{
-				$result[] = $buffer[$k];
+				$result[] = array("w" => $buffer[$k], "line" => $line, "word" => $word);;
 			}
 		}
-		
-		
-		
-	//print_r($result);
-	//die();
+	
 	
 		return $result;
-		//return implode(' ', $result);
-		//return $this->code;
+
 	}
 	
 	protected function addSpaces($code)
