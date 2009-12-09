@@ -223,6 +223,21 @@ if (headers_sent()) {
 			font-weight: normal;
 			font-style: normal;
 		}
+		
+		.term {
+			font-style:italic;
+		}
+		.neterm {
+			color:gray;
+		}
+		.resok {
+			color:green;
+			font-weight:bold;
+		}
+		.reserror{
+			color:red;
+			font-weight:bold;
+		}
 
 	/* ]]> */
 	</style>
@@ -307,14 +322,27 @@ if (headers_sent()) {
 			$kram = new Kram($table);
 			$result = $kram->validateInput($analyzedCode, new Symbol('S', Symbol::NETERMINAL));
 			
-			echo "<table>";
-			echo "<thead><tr><td>Vstup</td><td>Zasobnik</td><td>Kroky</td></tr></thead>";
 			
-			foreach ($result as $item)
+			// vvysledok
+			if ($result)
+			{
+				echo "<h3 class=\"resok\">Vstup je korektný</h3>";
+			}
+			else
+			{
+				echo "<h3 class=\"reserror\">CHYBA!</h3>";
+				
+			}
+			
+			
+			echo "<table>";
+			echo "<thead><tr><td width=\"40%\"><b>Vstup</b></td><td width=\"40%\"><b>Zasobnik</b></td><td width=\"20%\"><b>Kroky</b></td></tr></thead>";
+			
+			foreach ($kram->getResult() as $item)
 			{
 				echo "<tr>";
 				echo "<td>".htmlspecialchars($item['input'])."</td>";
-				echo "<td>".htmlspecialchars($item['stack'])."</td>";
+				echo "<td>".$item['stack']."</td>";
 				echo "<td>".htmlspecialchars($item['path'])."</td>";
 				echo "</tr>";
 			}
@@ -327,209 +355,6 @@ if (headers_sent()) {
 			_netteClosePanel();
 		}
 	?>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<?php $ex = $exception; $level = 0; ?>
-	<?php do { ?>
-
-		<?php if ($level++): ?>
-			<?php _netteOpenPanel('Caused by', TRUE) ?>
-			<div class="panel">
-				<h1><?php echo htmlspecialchars(get_class($ex)), ($ex->getCode() ? ' #' . $ex->getCode() : '') ?></h1>
-
-				<p><?php echo htmlspecialchars($ex->getMessage()) ?></p>
-			</div>
-		<?php endif ?>
-
-		<?php if (is_file($ex->getFile())): ?>
-		<?php _netteOpenPanel('Source file', FALSE) ?>
-			<p><strong>File:</strong> <?php echo htmlspecialchars($ex->getFile()) ?> &nbsp; <strong>Line:</strong> <?php echo $ex->getLine() ?></p>
-			<pre><?php _netteDebugPrintCode($ex->getFile(), $ex->getLine()) ?></pre>
-		<?php _netteClosePanel() ?>
-		<?php endif?>
-
-
-
-		<?php _netteOpenPanel('Call stack', FALSE) ?>
-			<ol>
-				<?php foreach ($ex->getTrace() as $key => $row): ?>
-				<li><p>
-
-				<?php if (isset($row['file'])): ?>
-					<span title="<?php echo htmlSpecialChars($row['file'])?>"><?php echo htmlSpecialChars(basename(dirname($row['file']))), '/<b>', htmlSpecialChars(basename($row['file'])), '</b></span> (', $row['line'], ')' ?>
-				<?php else: ?>
-					&lt;PHP inner-code&gt;
-				<?php endif ?>
-
-				<?php if (isset($row['file']) && is_file($row['file'])): ?><a href="#" onclick="return !toggle(this, 'src<?php echo "$level-$key" ?>')">source <span>&#x25b6;</span></a> &nbsp; <?php endif ?>
-
-				<?php if (isset($row['class'])) echo $row['class'] . $row['type'] ?>
-				<?php echo $row['function'] ?>
-
-				(<?php if (!empty($row['args'])): ?><a href="#" onclick="return !toggle(this, 'args<?php echo "$level-$key" ?>')">arguments <span>&#x25b6;</span></a><?php endif ?>)
-				</p>
-
-				<?php if (!empty($row['args'])): ?>
-					<div class="collapsed" id="args<?php echo "$level-$key" ?>">
-					<table>
-					<?php
-					try {
-						$r = isset($row['class']) ? new ReflectionMethod($row['class'], $row['function']) : new ReflectionFunction($row['function']);
-						$params = $r->getParameters();
-					} catch (Exception $e) {
-						$params = array();
-					}
-					foreach ($row['args'] as $k => $v) {
-						echo '<tr><td>', (isset($params[$k]) ? '$' . $params[$k]->name : "#$k"), '</td>';
-						echo '<td>', self::safeDump($v, isset($params[$k]) ? $params[$k]->name : NULL), "</td></tr>\n";
-					}
-					?>
-					</table>
-					</div>
-				<?php endif ?>
-
-
-				<?php if (isset($row['file']) && is_file($row['file'])): ?>
-					<pre class="collapsed" id="src<?php echo "$level-$key" ?>"><?php _netteDebugPrintCode($row['file'], $row['line']) ?></pre>
-				<?php endif ?>
-
-				</li>
-				<?php endforeach ?>
-			</ol>
-		<?php _netteClosePanel() ?>
-
-
-
-		<?php if ($ex instanceof /*Nette::*/IDebuggable): ?>
-		<?php foreach ($ex->getPanels() as $name => $panel): ?>
-		<?php _netteOpenPanel($name, empty($panel['expanded'])) ?>
-			<?php echo $panel['content'] ?>
-		<?php _netteClosePanel() ?>
-		<?php endforeach ?>
-		<?php endif ?>
-
-
-
-		<?php if (isset($ex->context) && is_array($ex->context)):?>
-		<?php _netteOpenPanel('Variables', TRUE) ?>
-		<table>
-		<?php
-		foreach ($ex->context as $k => $v) {
-			echo '<tr><td>$', htmlspecialchars($k), '</td><td>', self::safeDump($v, $k), "</td></tr>\n";
-		}
-		?>
-		</table>
-		<?php _netteClosePanel() ?>
-		<?php endif ?>
-
-	<?php } while (method_exists($ex, 'getPrevious') && $ex = $ex->getPrevious()); ?>
-	<?php while (--$level) _netteClosePanel() ?>
-
-
-
-
-
-	<?php _netteOpenPanel('Environment', TRUE) ?>
-		<?php
-		$list = get_defined_constants(TRUE);
-		if (!empty($list['user'])):?>
-		<h3><a href="#" onclick="return !toggle(this, 'pnl-env-const')">Constants <span>&#x25bc;</span></a></h3>
-		<table id="pnl-env-const">
-		<?php
-		foreach ($list['user'] as $k => $v) {
-		//	echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::safeDump($v, $k), "</td></tr>\n";
-		}
-		?>
-		</table>
-		<?php endif ?>
-
-
-		<h3><a href="#" onclick="return !toggle(this, 'pnl-env-files')">Included files <span>&#x25b6;</span></a> (<?php echo count(get_included_files()) ?>)</h3>
-		<table id="pnl-env-files" class="collapsed">
-		<?php
-		foreach (get_included_files() as $v) {
-		//	echo '<tr><td>', htmlspecialchars($v), "</td></tr>\n";
-		}
-		?>
-		</table>
-
-
-		<h3>$_SERVER</h3>
-		<?php if (empty($_SERVER)):?>
-		<p><i>empty</i></p>
-		<?php else: ?>
-		<table>
-		<?php
-		//foreach ($_SERVER as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::dump($v, TRUE), "</td></tr>\n";
-		?>
-		</table>
-		<?php endif ?>
-	<?php _netteClosePanel() ?>
-
-
-
-
-	<?php _netteOpenPanel('HTTP request', TRUE) ?>
-		<?php if (function_exists('apache_request_headers')): ?>
-		<h3>Headers</h3>
-		<table>
-		<?php
-		foreach (apache_request_headers() as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', htmlspecialchars($v), "</td></tr>\n";
-		?>
-		</table>
-		<?php endif ?>
-
-
-		<?php foreach (array('_GET', '_POST', '_COOKIE') as $name): ?>
-		<h3>$<?php echo $name ?></h3>
-		<?php if (empty($GLOBALS[$name])):?>
-		<p><i>empty</i></p>
-		<?php else: ?>
-		<table>
-		<?php
-		foreach ($GLOBALS[$name] as $k => $v) echo '<tr><td>', htmlspecialchars($k), '</td><td>', self::dump($v, TRUE), "</td></tr>\n";
-		?>
-		</table>
-		<?php endif ?>
-		<?php endforeach ?>
-	<?php _netteClosePanel() ?>
-
-
-
-	<?php _netteOpenPanel('HTTP response', TRUE) ?>
-		<h3>Headers</h3>
-		<?php if (headers_list()): ?>
-		<pre><?php
-		foreach (headers_list() as $s) echo htmlspecialchars($s), '<br>';
-		?></pre>
-		<?php else: ?>
-		<p><i>no headers</i></p>
-		<?php endif ?>
-	<?php _netteClosePanel() ?>
-
-
-	<ul>
-		<?php foreach ($colophons as $callback): ?>
-		<?php foreach ((array) call_user_func($callback, 'bluescreen') as $line): ?><li><?php echo $line, "\n" ?></li><?php endforeach ?>
-		<?php endforeach ?>
-	</ul>
 
 </body>
 </html>

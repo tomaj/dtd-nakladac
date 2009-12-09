@@ -54,6 +54,17 @@ class Zasobnik
 		}
 		return $result;
 	}
+	
+	public function getOutput()
+	{
+		$result = '';
+		foreach ($this->data as $item)
+		{
+			if ($item->isTerminal()) $result = '<span class="term">'.htmlspecialchars($item->getRepresentation()).'</span> ' . $result;
+			else $result .= '<span class="neterm">'.htmlspecialchars($item->getRepresentation()).'</span> ' . $result;
+		}
+		return $result;
+	}
 }
 
 ?>
