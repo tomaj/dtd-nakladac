@@ -15,12 +15,7 @@ class CodeAnalyzer
 	
 		$terminaly = AppConfig::get('terminaly');
 		
-		//echo $this->code,"\n\n";
-		
 		$code = $this->addSpaces($this->code);
-		
-		echo $code,"\n\n";
-		//die();
 		
 		$codeLength = strlen($code);
 		$buffer = '';

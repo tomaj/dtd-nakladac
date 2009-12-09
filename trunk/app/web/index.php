@@ -17,9 +17,8 @@ require_once(BASE_DIR . '/misc/Autoload.php');
 $gramatika = new Gramatika(AppConfig::get('terminaly'), AppConfig::get('empty_symbol'), AppConfig::get('gramatika'));
 $table = $gramatika->getTable();
 
-
-
-
+$firsts = $gramatika->getFirsts();
+$follows = $gramatika->getFollows();
 
 
 
@@ -253,7 +252,7 @@ if (headers_sent()) {
 <body>
 	<div id="error" class="panel">
 		<h1>DTD Nakladač</h1>
-		<p>popis</p>
+		<p>silná aplikácia nakladacia DTD schému skrz astrálne aspektý prekladačové...</p>
 	</div>
 
 	<?php _netteOpenPanel('Gramatika', TRUE) ?>
@@ -270,8 +269,21 @@ if (headers_sent()) {
 		</table>
 	<?php _netteClosePanel() ?>
 	
-	<?php _netteOpenPanel('Tabuľka', TRUE) ?>
+	<?php _netteOpenPanel('Tabuľka / First&Follow', TRUE) ?>
+		<h3>Tabuľka</h3>
 		<?php echo $table->getHTMLTable(); ?>
+		<h3>First</h3>
+		<table>
+			<?php foreach ($firsts as $key => $data): ?>
+				<tr><td><?php echo $key; ?></td><td><?php echo htmlspecialchars(implode(' ', $data)); ?></td></tr>
+			<?php endforeach; ?>
+		</table>
+		<h3>Follow</h3>
+		<table>
+			<?php foreach ($follows as $key => $data): ?>
+				<tr><td><?php echo $key; ?></td><td><?php echo htmlspecialchars(implode(' ', $data)); ?></td></tr>
+			<?php endforeach; ?>
+		</table>
 	<?php _netteClosePanel() ?>
 	
 	<?php _netteOpenPanel('Vstup', FALSE) ?>
@@ -283,12 +295,37 @@ if (headers_sent()) {
 
 	
 	<?php
-		$input = $_POST['vstup'];
-		$codeAnalyzer = new CodeAnalyzer($input);
-		$analyzedCode = $codeAnalyzer->getAnalyzedCode();
-		
-		$kram = new Kram($table);
-		$result = $kram->validateInput($codeAnalyzer->getAnalyzedCode(), new Symbol('S', Symbol::NETERMINAL));
+		if (isset($_POST['vstup']))
+		{
+			_netteOpenPanel('Výstup', FALSE);
+			
+			$input = $_POST['vstup'];
+			$codeAnalyzer = new CodeAnalyzer($input);
+			$analyzedCode = $codeAnalyzer->getAnalyzedCode();
+			
+			// vytvorit kram pre akceptaciu
+			$kram = new Kram($table);
+			$result = $kram->validateInput($analyzedCode, new Symbol('S', Symbol::NETERMINAL));
+			
+			echo "<table>";
+			echo "<thead><tr><td>Vstup</td><td>Zasobnik</td><td>Kroky</td></tr></thead>";
+			
+			foreach ($result as $item)
+			{
+				echo "<tr>";
+				echo "<td>".htmlspecialchars($item['input'])."</td>";
+				echo "<td>".htmlspecialchars($item['stack'])."</td>";
+				echo "<td>".htmlspecialchars($item['path'])."</td>";
+				echo "</tr>";
+			}
+			
+			echo "</table>";
+			
+			
+			//echo $result;
+			
+			_netteClosePanel();
+		}
 	?>
 	
 	
