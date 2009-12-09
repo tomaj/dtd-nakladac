@@ -277,9 +277,21 @@ if (headers_sent()) {
 		<?php $gramatika = AppConfig::get('gramatika'); ?>
 		<table id="pnl-env-const">
 		<?php
+		$c = 1;
 		foreach ($gramatika as $line) {
 			$parts = explode(' -> ', $line);
-			$replace = array(' | ' => ' <strong>|</strong> ', 'nil' => '<i>nil</i>');
+			$rules = explode(' | ', $parts[1]);
+			$ruleLine = array();
+			foreach ($rules as $k) $ruleLine[] = $k.'##['.($c++).']##';
+			$parts[1] = implode(' | ', $ruleLine);
+			
+			$replace = array(
+				' | ' => ' <strong>|</strong> ', 
+				'nil' => '<i>nil</i>',
+				'##[' => '<sup>[',
+				']##' => ']</sup>',
+			);
+			
 			$parts[1] = str_replace(array_keys($replace), array_values($replace), htmlspecialchars($parts[1]));
 			echo '<tr><td><strong>', htmlspecialchars($parts[0]), "</strong> -> </td><td>", $parts[1] ,"</td></tr>\n";
 		}
