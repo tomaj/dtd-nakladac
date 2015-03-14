@@ -1,0 +1,1 @@
+som prave zistil ze to nebude take jednoduche ako som chcel... my tam asi musime dat klasicke DTD nie take ze kazdy terminal bude od dalsieho oddeleny medzerou. vieme to tam nejako upravit? dufam zee si to nezacal tak robit :(
